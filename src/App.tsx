@@ -33,6 +33,7 @@ interface SkillsProps {
 }
 // --- 可重用的组件 ---
 
+
 // 头部组件
 const Header: React.FC<HeaderProps> = ({ data }) => (
   <header className="resume-header">
@@ -79,7 +80,7 @@ const App = () => {
       <section className="resume-section experience">
         <h2>工作经历/实习经历</h2>
         {/* 渲染工作经历的逻辑 */}
-        {RESUME_DATA.experience.map((item, index) => (
+        {RESUME_DATA.experience.map((_, index) => (
           <div key={index}>/* 你的 TimelineItem 组件 */</div>
         ))}
       </section>
