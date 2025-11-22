@@ -37,6 +37,12 @@ jobs:
       - name: Build project (Vite)
         run: npm run build
 
+      # === 新增步骤: 强制禁用 Jekyll/MIME干扰 ===
+      - name: Create .nojekyll file
+      # 在 Vite 的默认输出目录 (dist) 中创建空文件
+        run: touch ./dist/.nojekyll
+      # ========================================
+
       # ==================================================
       # FIX: Updated Artifact Actions
       # ==================================================
