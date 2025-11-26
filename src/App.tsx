@@ -5,6 +5,7 @@ import { RESUME_DATA } from './data'; // 假设你已将 data.js 改名为 data.
 
 // 引入你的 CSS 文件
 import './App.css'; 
+import { resume } from 'react-dom/server';
 
 // 1. 定义 Header 部分的数据结构
 interface HeaderData {
@@ -21,66 +22,96 @@ interface SkillsData {
   databases: string[];
 }
 
-// 3. 定义 Header 组件的 Props 接口
-interface HeaderProps {
-  data: HeaderData;
+interface ExperienceData {
+  company: string;
+  title: string;
+  department: string;
+  date: string;
+  location: string;
+  details: string[];
 }
 
-// 4. 定义 Skills 组件的 Props 接口
-interface SkillsProps {
-  data: SkillsData;
+interface TimelineProps {
+  experiences: ExperienceData[];
 }
-// --- 可重用的组件 ---
-
 
 // 头部组件
-const Header: React.FC<HeaderProps> = ({ data }) => (
+const Header = ({ name, phone, email, location }: HeaderData) => (
   <header className="resume-header">
-    <h1 className="name">{data.name}</h1> 
+    <h1 className="name">{name}</h1> 
     <div className="contact-info">
-      <span className="phone">{data.phone}</span> | 
-      <span className="email">{data.email}</span> | 
-      <span className="location">{data.location}</span>
+      <span className="phone">{phone}</span> | 
+      <span className="email">{email}</span> | 
+      <span className="location">{location}</span>
     </div>
   </header>
 );
 
 // 技能组件
-const Skills: React.FC<SkillsProps> = ({ data }) => (
+const Skills = ({ languages, frameworks, databases }: SkillsData) => (
   <section className="resume-section skills">
     <h2>技能</h2>
     <div className="skills-group">
       <p className="skills-item">
-        <strong>编程语言:</strong>{data.languages.join(' / ')}
+        <strong>编程语言:</strong>{languages.join(' / ')}
       </p>
       <p className="skills-item">
-        <strong>基础框架:</strong>{data.frameworks.join(' / ')}
+        <strong>基础框架:</strong>{frameworks.join(' / ')}
       </p>
       <p className="skills-item">
-        <strong>数据库:</strong>{data.databases.join(' / ')}
+        <strong>数据库:</strong>{databases.join(' / ')}
       </p>
     </div>
   </section>
 );
 
-// ... (省略 TimelineItem 组件以保持简洁，但请确保在你的文件中包含它)
+const TimelineItem = (data: ExperienceData) => (
+  <div className="timeline-item">
+    <div className="timeline-dot"></div>
+    <div className="timeline-content">
+      <h3 className="timeline-title">
+        {data.title} @ {data.company}
+      </h3>
+
+      <div className="timeline-meta">
+        <span className="timeline-data">{data.date}</span>
+        <span className="timeline-location">/ {data.location}</span>
+      </div>
+
+      <ul className='timeline-details'>
+        {data.details.map((detail, index) => (
+          <li key={index}>{detail}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+);
+
+const Timeline = ({ experiences }: TimelineProps) => (
+  <section className='resume-section experience'>
+    <h2>工作经历</h2>
+
+    <div className="timeline-container">
+      {experiences.map((experience, index) => (
+        <TimelineItem
+        key={index}
+        {...experience}
+        />
+      ))}
+    </div>
+  </section>
+);
 
 // --- 主应用组件 ---
 
 const App = () => {
   return (
     <div className="resume-container">
-      <Header data={RESUME_DATA.header} />
+      <Header {...RESUME_DATA.header} />
 
-      <Skills data={RESUME_DATA.skills} />
+      <Skills {...RESUME_DATA.skills} />
 
-      <section className="resume-section experience">
-        <h2>工作经历</h2>
-        {/* 渲染工作经历的逻辑 */}
-        {RESUME_DATA.experience.map((_, index) => (
-          <div key={index}>/* 你的 TimelineItem 组件 */</div>
-        ))}
-      </section>
+      <Timeline experiences={RESUME_DATA.experience}/>
       
       {/* ... 渲染项目经历和教育经历的逻辑 ... */}
       
