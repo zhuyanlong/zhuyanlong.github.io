@@ -19,7 +19,6 @@ interface SkillsData {
   languages: string[];
   frameworks: string[];
   databases: string[];
-  techStacks: string[];
 }
 
 // 3. 定义 Header 组件的 Props 接口
@@ -51,11 +50,16 @@ const Skills: React.FC<SkillsProps> = ({ data }) => (
   <section className="resume-section skills">
     <h2>技能</h2>
     <div className="skills-group">
-      <h3>编程语言:</h3>
-      {/* TypeScript 知道 data.languages 是 string[]，因此 join 是安全的 */}
-      <p>{data.languages.join(' / ')}</p> 
+      <p className="skills-item">
+        <strong>编程语言:</strong>{data.languages.join(' / ')}
+      </p>
+      <p className="skills-item">
+        <strong>基础框架:</strong>{data.frameworks.join(' / ')}
+      </p>
+      <p className="skills-item">
+        <strong>数据库:</strong>{data.databases.join(' / ')}
+      </p>
     </div>
-    {/* ... 其他 skills 逻辑 ... */}
   </section>
 );
 
@@ -67,18 +71,11 @@ const App = () => {
   return (
     <div className="resume-container">
       <Header data={RESUME_DATA.header} />
-      
-      <section className="resume-section self-assessment">
-        <h2>自我评价</h2>
-        <ul>
-          {RESUME_DATA.summary.map((line, index) => <li key={index}>{line}</li>)}
-        </ul>
-      </section>
 
       <Skills data={RESUME_DATA.skills} />
 
       <section className="resume-section experience">
-        <h2>工作经历/实习经历</h2>
+        <h2>工作经历</h2>
         {/* 渲染工作经历的逻辑 */}
         {RESUME_DATA.experience.map((_, index) => (
           <div key={index}>/* 你的 TimelineItem 组件 */</div>
