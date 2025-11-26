@@ -1,11 +1,9 @@
 // src/App.tsx
 // 你的 TypeScript React 组件
-import React from 'react';
 import { RESUME_DATA } from './data'; // 假设你已将 data.js 改名为 data.ts 或 data.js
 
 // 引入你的 CSS 文件
 import './App.css'; 
-import { resume } from 'react-dom/server';
 
 // 1. 定义 Header 部分的数据结构
 interface HeaderData {
